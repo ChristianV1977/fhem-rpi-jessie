@@ -5,8 +5,10 @@
 # * supervisor web at port 9001 export
 # * added service sshd  to supervisord
 
-FROM resin/rpi-raspbian:jessie
+FROM jsurf/rpi-raspbian
 MAINTAINER VCR
+
+RUN [ "cross-build-start" ]
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
@@ -132,4 +134,5 @@ ENTRYPOINT ["./run.sh"]
 # last add volumes
 VOLUME /opt/fhem   /opt/yowsup-config
 
+RUN [ "cross-build-end" ]
 # End Dockerfile
