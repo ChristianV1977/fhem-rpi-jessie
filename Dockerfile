@@ -16,14 +16,15 @@ ENV TERM xterm
 # Install dependencies
 # RUN apt-get -y --force-yes install apt-utils
 RUN apt-get update \
+ && apt-get -y --force-yes upgrade \
  && apt-get -y --force-yes install \
-    apt-utils wget git nano make gcc g++ apt-transport-https libavahi-compat-libdnssd-dev sudo nodejs \
-    etherwake mc vim htop snmp lsof libssl-dev telnet-ssl imagemagick dialog curl usbutils unzip \
+    bash apt-utils wget git nano make gcc g++ apt-transport-https libavahi-compat-libdnssd-dev sudo nodejs \
+    etherwake mc vim htop snmp lsof libssl-dev telnet-ssl imagemagick dialog curl usbutils unzip xterm \
  && apt-get clean
 
 # Firmware flash
 RUN apt-get -y --force-yes install \
-    avrdude git-core gcc-avr avr-libc \
+    avrdude gcc-avr avr-libc \
  && apt-get clean
 
 # Install perl packages
