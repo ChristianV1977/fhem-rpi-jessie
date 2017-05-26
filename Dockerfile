@@ -14,9 +14,6 @@ RUN [ "cross-build-start" ]
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-RUN sudo mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc \
- && sudo echo ':arm:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-arm-static:' > /proc/sys/fs/binfmt_misc/register  
-
 # Install dependencies
 # RUN apt-get -y --force-yes install apt-utils
 RUN apt-get update \
@@ -44,7 +41,7 @@ RUN apt-get -y --force-yes install \
 # dbi, svg, sound
 RUN apt-get -y --force-yes install \
     libdbd-pg-perl libdbi-perl libdbd-sqlite3-perl sqlite3 libclass-dbi-mysql-perl \
-    mysql-client libdbd-mysql libdbd-mysql-perl libimage-librsvg-perl libav-tools \
+    mysql-client libdbd-mysql libdbd-mysql-perl libimage-librsvg-perl libav-tools wiringpi \
  && apt-get clean
 
 # whatsapp Python yowsup
@@ -72,10 +69,10 @@ RUN mkdir /opt/yowsup-config \
 WORKDIR /opt
 # install fhem (debian paket)
 # wiringPi
-RUN git clone git://git.drogon.net/wiringPi \
- && cd wiringPi \
- && git pull origin \
- && ./build
+#RUN git clone git://git.drogon.net/wiringPi \
+# && cd wiringPi \
+# && git pull origin \
+# && ./build
 
 # RCswitch
 RUN git clone https://github.com/r10r/rcswitch-pi.git \
@@ -106,8 +103,6 @@ RUN apt-get -y --force-yes install openssh-server \
  && echo "root:fhem!" | chpasswd \
  && /bin/rm /etc/ssh/ssh_host_*
 # RUN dpkg-reconfigure openssh-server
-
-
 
 # NFS client / autofs
 RUN apt-get  -y --force-yes install nfs-common autofs \
