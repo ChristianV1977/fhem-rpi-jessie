@@ -75,8 +75,8 @@ RUN git clone git://git.drogon.net/wiringPi \
 
 # RCswitch
 RUN git clone https://github.com/r10r/rcswitch-pi.git \
- && cd rcswitch-pi \
- && make
+ && cd rcswitch-pi 
+# && make
 
 RUN wget https://fhem.de/fhem-5.8.deb \
  && dpkg -i fhem-5.8.deb
