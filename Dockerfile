@@ -74,6 +74,12 @@ WORKDIR /opt
 # && git pull origin \
 # && ./build
 
+# pilight
+RUN echo "deb http://apt.pilight.org/ stable main" > /etc/apt/sources.list.d/pilight.list \
+ && wget -O - http://apt.pilight.org/pilight.key | apt-key add - \
+ && apt-get update \
+ && apt-get install pilight
+
 # RCswitch
 RUN git clone https://github.com/r10r/rcswitch-pi.git \
  && cd rcswitch-pi \
