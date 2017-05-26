@@ -70,8 +70,8 @@ WORKDIR /opt
 # wiringPi
 RUN git clone git://git.drogon.net/wiringPi \
  && cd wiringPi \
- && git pull origin \
- && ./build
+ && git pull origin 
+# && ./build
 
 # RCswitch
 RUN git clone https://github.com/r10r/rcswitch-pi.git \
