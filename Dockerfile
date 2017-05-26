@@ -5,7 +5,9 @@
 # * supervisor web at port 9001 export
 # * added service sshd  to supervisord
 
-FROM jsurf/rpi-raspbian
+#FROM jsurf/rpi-raspbian
+FROM resin/armv7hf-debian
+
 MAINTAINER VCR
 
 RUN [ "cross-build-start" ]
@@ -70,13 +72,13 @@ WORKDIR /opt
 # wiringPi
 RUN git clone git://git.drogon.net/wiringPi \
  && cd wiringPi \
- && git pull origin 
-# && ./build
+ && git pull origin \
+ && ./build
 
 # RCswitch
 RUN git clone https://github.com/r10r/rcswitch-pi.git \
- && cd rcswitch-pi 
-# && make
+ && cd rcswitch-pi \
+ && make
 
 RUN wget https://fhem.de/fhem-5.8.deb \
  && dpkg -i fhem-5.8.deb
