@@ -15,41 +15,39 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
 # Install dependencies
+# Firmware flash
+#   avrdude gcc-avr avr-libc
+# Install perl packages
+#   libalgorithm-merge-perl libclass-isa-perl libcommon-sense-perl libdpkg-perl liberror-perl \
+#   libfile-copy-recursive-perl libfile-fcntllock-perl libio-socket-ip-perl libjson-perl \
+#   libjson-xs-perl libmail-sendmail-perl libsocket-perl libswitch-perl libsys-hostname-long-perl \
+#   libterm-readkey-perl libterm-readline-perl-perl libsnmp-perl libnet-telnet-perl libmime-lite-perl \
+#   libxml-simple-perl libdigest-crc-perl libcrypt-cbc-perl libio-socket-timeout-perl libmime-lite-perl \
+#   libdevice-serialport-perl libwww-perl libcgi-pm-perl libtext-diff-perl \
+# dbi, svg, sound
+#   libdbd-pg-perl libdbi-perl libdbd-sqlite3-perl sqlite3 libclass-dbi-mysql-perl \
+#   mysql-client libdbd-mysql libdbd-mysql-perl libimage-librsvg-perl libav-tools wiringpi \
+# whatsapp Python yowsup
+#   python-soappy python-dateutil python-pip python-dev build-essential libgmp10 \
+# whatsapp images
+#   libtiff5-dev libjpeg-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk \
+
 # RUN apt-get -y --force-yes install apt-utils
 RUN apt-get update \
  && apt-get -y --force-yes upgrade \
  && apt-get -y --force-yes install \
     bash apt-utils wget git nano make gcc g++ apt-transport-https libavahi-compat-libdnssd-dev sudo nodejs \
     etherwake mc vim htop snmp lsof libssl-dev telnet-ssl imagemagick dialog curl usbutils unzip xterm \
- && apt-get clean
-
-# Firmware flash
-RUN apt-get -y --force-yes install \
     avrdude gcc-avr avr-libc \
- && apt-get clean
-
-# Install perl packages
-RUN apt-get -y --force-yes install \
     libalgorithm-merge-perl libclass-isa-perl libcommon-sense-perl libdpkg-perl liberror-perl \
     libfile-copy-recursive-perl libfile-fcntllock-perl libio-socket-ip-perl libjson-perl \
     libjson-xs-perl libmail-sendmail-perl libsocket-perl libswitch-perl libsys-hostname-long-perl \
     libterm-readkey-perl libterm-readline-perl-perl libsnmp-perl libnet-telnet-perl libmime-lite-perl \
     libxml-simple-perl libdigest-crc-perl libcrypt-cbc-perl libio-socket-timeout-perl libmime-lite-perl \
     libdevice-serialport-perl libwww-perl libcgi-pm-perl libtext-diff-perl \
- && apt-get clean
-
-# dbi, svg, sound
-RUN apt-get -y --force-yes install \
     libdbd-pg-perl libdbi-perl libdbd-sqlite3-perl sqlite3 libclass-dbi-mysql-perl \
     mysql-client libdbd-mysql libdbd-mysql-perl libimage-librsvg-perl libav-tools wiringpi \
- && apt-get clean
-
-# whatsapp Python yowsup
-RUN apt-get -y --force-yes install \
     python-soappy python-dateutil python-pip python-dev build-essential libgmp10 \
- && apt-get clean
-# whatsapp images
-RUN apt-get -y --force-yes install \
     libtiff5-dev libjpeg-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk \
  && apt-get clean
 
@@ -59,36 +57,37 @@ RUN pip install --upgrade pip \
  && pip install pillow --upgrade \
  && pip install yowsup2 --upgrade
 
-# install yowsup-client
 WORKDIR /opt
+
+# install yowsup-client
 RUN mkdir /opt/yowsup-config \
  && wget -N https://github.com/tgalal/yowsup/archive/master.zip \
  && unzip -o master.zip \
  && rm master.zip
 
-WORKDIR /opt
-# install fhem (debian paket)
-# wiringPi
+# install wiringPi --> moved to APT-GET
+# NOT WORKING, build has hardcoded "CC = gcc"
 #RUN git clone git://git.drogon.net/wiringPi \
 # && cd wiringPi \
 # && git pull origin \
 # && ./build
 
-# pilight
+# install pilight
 RUN echo "deb http://apt.pilight.org/ stable main" > /etc/apt/sources.list.d/pilight.list \
  && wget -O - http://apt.pilight.org/pilight.key | apt-key add - \
  && apt-get update \
  && apt-get install pilight
 
-# RCswitch
+# install RCswitch
 RUN git clone https://github.com/r10r/rcswitch-pi.git \
  && cd rcswitch-pi \
  && make
 
+# install fhem (debian paket)
 RUN wget https://fhem.de/fhem-5.8.deb \
- && dpkg -i fhem-5.8.deb
-# RUN rm fhem.deb
-RUN echo 'fhem    ALL = NOPASSWD:ALL' >>/etc/sudoers \
+ && dpkg -i fhem-5.8.deb \
+ && rm fhem-5.8.deb \
+ && echo 'fhem    ALL = NOPASSWD:ALL' >>/etc/sudoers \
  && echo 'attr global pidfilename /var/run/fhem/fhem.pid' >> /opt/fhem/fhem.cfg
 
 RUN apt-get -y --force-yes install supervisor \
