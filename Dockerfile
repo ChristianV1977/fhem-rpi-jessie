@@ -1,9 +1,24 @@
-# Version 2 1/2017
-# Changes:
-# * added volumedata2.sh - extracts  data from a tgz when using empty host volumes
-# * added superivsord config for fhem running foreground 
-# * supervisor web at port 9001 export
-# * added service sshd  to supervisord
+### Set Timezone "Europe/Berlin"
+### Install dependencies
+## Main Tools and extras
+# apt-utils apt-transport-https bash wget curl unzip python-pip
+# htop vim usbutils etherwake sudo xterm imagemagick snmp lsof avahi-daemon
+# supervisor cron openssh-server nfs-common autofs nodejs
+## Firmware flash and compile
+# build-essential git make gcc g++ gcc-avr avr-libc dialog avrdude
+## FHEM
+# perl-base libdevice-serialport-perl libwww-perl libio-socket-ssl-perl libcgi-pm-perl libjson-perl
+# sqlite3 libdbd-sqlite3-perl libtext-diff-perl libtimedate-perl libmail-imapclient-perl libgd-graph-perl
+# libtext-csv-perl libxml-simple-perl liblist-moreutils-perl ttf-liberation libimage-librsvg-perl libgd-text-perl
+# libsocket6-perl libio-socket-inet6-perl libmime-base64-perl libimage-info-perl libusb-1.0-0-dev libnet-server-perl
+## DB log, SVG, sound
+# libdbi-perl libdbd-mysql-perl libclass-dbi-mysql-perl mysql-client libdbd-mysql libimage-librsvg-perl libav-tools
+## whatsapp Python yowsup
+# python-soappy python-dateutil python-dev libgmp10
+## whatsapp images
+# libtiff5-dev libjpeg-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
+## wiringpi and wiringpi2
+# wiringpi python-virtualenv
 
 FROM jsurf/rpi-raspbian
 
@@ -14,48 +29,48 @@ RUN [ "cross-build-start" ]
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-# Install dependencies
-# Firmware flash
-#   avrdude gcc-avr avr-libc
-# Install perl packages
-#   libalgorithm-merge-perl libclass-isa-perl libcommon-sense-perl libdpkg-perl liberror-perl \
-#   libfile-copy-recursive-perl libfile-fcntllock-perl libio-socket-ip-perl libjson-perl \
-#   libjson-xs-perl libmail-sendmail-perl libsocket-perl libswitch-perl libsys-hostname-long-perl \
-#   libterm-readkey-perl libterm-readline-perl-perl libsnmp-perl libnet-telnet-perl libmime-lite-perl \
-#   libxml-simple-perl libdigest-crc-perl libcrypt-cbc-perl libio-socket-timeout-perl libmime-lite-perl \
-#   libdevice-serialport-perl libwww-perl libcgi-pm-perl libtext-diff-perl \
-# dbi, svg, sound
-#   libdbd-pg-perl libdbi-perl libdbd-sqlite3-perl sqlite3 libclass-dbi-mysql-perl \
-#   mysql-client libdbd-mysql libdbd-mysql-perl libimage-librsvg-perl libav-tools wiringpi \
-# whatsapp Python yowsup
-#   python-soappy python-dateutil python-pip python-dev build-essential libgmp10 \
-# whatsapp images
-#   libtiff5-dev libjpeg-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk \
-
-# RUN apt-get -y --force-yes install apt-utils
-RUN apt-get update \
+RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata \
+ && apt-get update \
  && apt-get -y --force-yes upgrade \
  && apt-get -y --force-yes install \
-    bash apt-utils wget git nano make gcc g++ apt-transport-https libavahi-compat-libdnssd-dev sudo nodejs \
-    etherwake mc vim htop snmp lsof libssl-dev telnet-ssl imagemagick dialog curl usbutils unzip xterm \
-    avrdude gcc-avr avr-libc \
-    libalgorithm-merge-perl libclass-isa-perl libcommon-sense-perl libdpkg-perl liberror-perl \
-    libfile-copy-recursive-perl libfile-fcntllock-perl libio-socket-ip-perl libjson-perl \
-    libjson-xs-perl libmail-sendmail-perl libsocket-perl libswitch-perl libsys-hostname-long-perl \
-    libterm-readkey-perl libterm-readline-perl-perl libsnmp-perl libnet-telnet-perl libmime-lite-perl \
-    libxml-simple-perl libdigest-crc-perl libcrypt-cbc-perl libio-socket-timeout-perl libmime-lite-perl \
-    libdevice-serialport-perl libwww-perl libcgi-pm-perl libtext-diff-perl \
-    libdbd-pg-perl libdbi-perl libdbd-sqlite3-perl sqlite3 libclass-dbi-mysql-perl \
-    mysql-client libdbd-mysql libdbd-mysql-perl libimage-librsvg-perl libav-tools wiringpi \
-    python-soappy python-dateutil python-pip python-dev build-essential libgmp10 \
-    libtiff5-dev libjpeg-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk \
- && apt-get clean
+ apt-utils apt-transport-https bash dbus wget curl unzip python-pip \
+ htop vim usbutils etherwake sudo xterm imagemagick snmp lsof avahi-daemon \
+ supervisor cron openssh-server nfs-common autofs nodejs wiringpi \
+ build-essential git make gcc g++ gcc-avr avr-libc dialog avrdude \
 
-# Pyhton stuff
-RUN pip install --upgrade pip \
+ perl-base libdevice-serialport-perl libwww-perl libio-socket-ssl-perl libcgi-pm-perl libjson-perl \
+ sqlite3 libdbd-sqlite3-perl libtext-diff-perl libtimedate-perl libmail-imapclient-perl libgd-graph-perl \
+ libtext-csv-perl libxml-simple-perl liblist-moreutils-perl ttf-liberation libimage-librsvg-perl libgd-text-perl \
+ libsocket6-perl libio-socket-inet6-perl libmime-base64-perl libimage-info-perl libusb-1.0-0-dev libnet-server-perl \
+
+ libdbi-perl libdbd-mysql-perl libclass-dbi-mysql-perl mysql-client libdbd-mysql libimage-librsvg-perl libav-tools \
+
+ python-soappy python-dateutil python-dev libgmp10 \
+ libtiff5-dev libjpeg-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk \
+
+ && echo "deb http://apt.pilight.org/ stable main" > /etc/apt/sources.list.d/pilight.list \
+ && wget -O - http://apt.pilight.org/pilight.key | apt-key add - \
+ && apt-get update \
+ && apt-get install pilight \
+
+ && pip install --upgrade pip \
  && pip install python-axolotl --upgrade \
  && pip install pillow --upgrade \
- && pip install yowsup2 --upgrade
+ && pip install yowsup2 --upgrade \
+ && pip install pyserial --upgrade \
+ && pip install wiringpi2 --upgrade \
+
+ && apt-get clean \
+ && apt-get autoremove \
+ && apt-get clean \
+
+ && echo "/net /etc/auto.net --timeout=60" >> /etc/auto.master \
+
+ && sed -i 's/Port 22/Port 2222/g' /etc/ssh/sshd_config  \
+ && sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config \
+ && sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/g' /etc/ssh/sshd_config \
+ && echo "root:fhem!" | chpasswd \
+ && /bin/rm /etc/ssh/ssh_host_*
 
 WORKDIR /opt
 
@@ -65,22 +80,15 @@ RUN mkdir /opt/yowsup-config \
  && unzip -o master.zip \
  && rm master.zip
 
-# install wiringPi --> moved to APT-GET
-# NOT WORKING, build has hardcoded "CC = gcc"
-#RUN git clone git://git.drogon.net/wiringPi \
-# && cd wiringPi \
-# && git pull origin \
-# && ./build
-
-# install pilight
-RUN echo "deb http://apt.pilight.org/ stable main" > /etc/apt/sources.list.d/pilight.list \
- && wget -O - http://apt.pilight.org/pilight.key | apt-key add - \
- && apt-get update \
- && apt-get install pilight
-
 # install RCswitch
 RUN git clone https://github.com/r10r/rcswitch-pi.git \
  && cd rcswitch-pi \
+ && make
+
+# MySensors Gateway
+RUN git clone https://github.com/mysensors/MySensors.git --branch master \
+ && cd MySensors \
+ && ./configure --soc=BCM2835 --my-transport=nrf24 --my-gateway=ethernet --my-port=5003 --my-rf24-irq-pin=15 \
  && make
 
 # install fhem (debian paket)
@@ -89,31 +97,6 @@ RUN wget https://fhem.de/fhem-5.8.deb \
  && rm fhem-5.8.deb \
  && echo 'fhem    ALL = NOPASSWD:ALL' >>/etc/sudoers \
  && echo 'attr global pidfilename /var/run/fhem/fhem.pid' >> /opt/fhem/fhem.cfg
-
-RUN apt-get -y --force-yes install supervisor \
- && mkdir -p /var/log/supervisor
-
-# Do some stuff
-RUN echo Europe/Berlin > /etc/timezone \
- && dpkg-reconfigure tzdata  \
- && apt-get -y --force-yes install at cron \
- && apt-get clean
-
-# sshd on port 2222 and allow root login / password = fhem!
-RUN apt-get -y --force-yes install openssh-server \
- && apt-get clean   \
- && sed -i 's/Port 22/Port 2222/g' /etc/ssh/sshd_config  \
- && sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config \
- && sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/g' /etc/ssh/sshd_config \
- && echo "root:fhem!" | chpasswd \
- && /bin/rm /etc/ssh/ssh_host_*
-# RUN dpkg-reconfigure openssh-server
-
-# NFS client / autofs
-RUN apt-get  -y --force-yes install nfs-common autofs \
- && apt-get clean \
- && apt-get autoremove \
- && echo "/net /etc/auto.net --timeout=60" >> /etc/auto.master
 
 ENV RUNVAR fhem
 WORKDIR /root

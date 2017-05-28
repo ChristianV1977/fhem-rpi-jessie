@@ -11,15 +11,11 @@ test -x /etc/ssh/ssh_host_dsa_key || dpkg-reconfigure openssh-server
         chmod 0755 /var/run/sshd
     fi
 
-
-# /etc/init.d/ssh start 
-# ssh start with supervisord
-
 echo "Current directory : $(pwd)"
 echo "Environment RUNVAR: $RUNVAR"
 echo "There are $# arguments: $@"
 
-# make pidfile rundir for fhem (because /var/run  ist tmpfs in ram)
+# make pidfile rundir for fhem (because /var/run  is tmpfs in ram)
 if [ ! -d /var/run/fhem  ]; then
     mkdir /var/run/fhem
     chown -R fhem:root /var/run/fhem
@@ -44,7 +40,8 @@ if [ -z "$1" ]; then
     service avahi-daemon  start
     service cron start
 	
-	# fhem start with supervisord 
+    # fhem start with supervisord 
+    mkdir -p /var/log/supervisor
     /usr/bin/supervisord
   else
     echo "Execute: $1 "

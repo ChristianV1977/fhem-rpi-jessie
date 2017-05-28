@@ -1,14 +1,20 @@
 [![](https://images.microbadger.com/badges/image/vcrhome/fhem-rpi-jessie.svg)](https://microbadger.com/images/vcrhome/fhem-rpi-jessie "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/vcrhome/fhem-rpi-jessie.svg)](https://microbadger.com/images/vcrhome/fhem-rpi-jessie "Get your own version badge on microbadger.com")
 
-## Docker Container for FHEM House-Automation-System - Full install
-This image is the second version build 1/2017 and is debian 8 (jessie) based, includes some stuff and has several perl modules installed. It should run out of the box.
+## Docker Container for FHEM House-Automation-System - Full install Version 5.8
+With some extras: DBlog, WiringPI, WiringPI2, PiLight, RCswitch, Whatsapp with yowsup and MySensors Gateway (IRQ Pin 15)
+Ready for firmware flashing (avrdude installed)
+
+Timezone is set to Europe/Berlin with NTP support.
+
+Started and Controlled over Supervisord on Port 9001 (user:admin pass:admin).
+
+All should run out of the box.
 
 If using host volumes (ie. /opt/fhem) initial data are exctracted from the installation but only if the host directory is empty.
+For WiringPI, PiLight and MySensors Gateway needes "--device /dev/mem:/dev/mem --privileged"
 
 Website: http://www.fhem.de
-
-Fhem forum thread: https://forum.fhem.de/index.php/topic,51190.0.html
 
 ### Features
 * volume /opt/fhem
@@ -20,12 +26,10 @@ Fhem forum thread: https://forum.fhem.de/index.php/topic,51190.0.html
 * Exposed ports: 2222/SSH, 7072 Fhem-raw, 8083-8085 Fhem Web, 9001 supervisord (** new **)
 * supervisord for fhem
 * changed running fhem system checked with a pid-controlled script and totaly controlled from supervisord (** new **)
-* supervisord for sshd (** new **) 
 * cron daemon / at
 * NFS client and autofs /net
 * ssh root password: fhem!
 * USB tools for CUL hardware
-* supervisor web-ui at port 9001 (user:admin pass:admin) (** new **)
 
 ### Run:
     docker run -d --name fhem --cap-add SYS_ADMIN -p 7072:7072 -p 8083:8083 -p 8084:8084 -p 8085:8085 -p 2222:2222 -p 9001:9001 vcrhome/fhem-rpi-jessie
