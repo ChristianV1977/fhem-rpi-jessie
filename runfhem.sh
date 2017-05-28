@@ -3,7 +3,6 @@
 
 set -eu
 
-
 pidfile="/var/run/fhem/fhem.pid"
 cd /opt/fhem
 # command=/usr/sbin/your-daemon
