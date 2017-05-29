@@ -23,10 +23,6 @@ fi
 
 if [ -z "$1" ]; then
     echo "No argument supplied. Start supervisord and services."
-#    /_cfg/volumedata2.sh write /opt/fhem 
-#    /_cfg/volumedata2.sh write /opt/yowsup-config 
-	chown fhem /opt/fhem -R
-	chown fhem /opt/yowsup-config -R
 	
 	/etc/init.d/dbus start
 

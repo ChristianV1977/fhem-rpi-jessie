@@ -74,7 +74,8 @@ RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata \
 WORKDIR /opt
 
 # install yowsup-client
-RUN wget -N https://github.com/tgalal/yowsup/archive/master.zip \
+RUN mkdir /opt/yowsup-config \
+ && wget -N https://github.com/tgalal/yowsup/archive/master.zip \
  && unzip -o master.zip \
  && rm master.zip \
  && wget https://github.com/tgalal/python-axolotl/archive/master.zip \
@@ -115,14 +116,6 @@ EXPOSE 2222 7072 8083 8084 8085 8086 9001
 ADD run.sh /root/
 ADD runfhem.sh /root/
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-#RUN mkdir /_cfg  
-#ADD volumedata2.sh /_cfg/
-#RUN chmod +x /root/run.sh \
-# && chmod +x /_cfg/*.sh \
-# && /_cfg/volumedata2.sh create /opt/fhem \
-# && /_cfg/volumedata2.sh create /opt/yowsup-config \
-# && touch /opt/yowsup-config/empty.txt
 
 ENTRYPOINT ["./run.sh"]
 #CMD ["arg1"]

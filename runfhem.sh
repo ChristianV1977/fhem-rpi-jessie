@@ -10,17 +10,20 @@ if [[ ! -f config/fhem.cfg ]]; then
 cp fhem.cfg.org config/fhem.cfg
 fi
 ln -s /opt/fhem/config/fhem.cfg /opt/fhem/fhem.cfg
+chown fhem /opt/fhem -R
 
 if [[ ! -d config/yowsup-config ]]; then
 mkdir config/yowsup-config
 fi
+mv /opt/yowsup-config /opt/yowsup-config.org
 ln -s /opt/fhem/config/yowsup-config /opt/yowsup-config
+chown fhem /opt/yowsup-config -R
 
 if [[ ! -d config/pilight ]]; then
 mkdir config/pilight
 fi
 if [[ ! -f config/pilight/config.json ]]; then
-cp /etc/pilight/config.json.org /opt/fhem/config/pilight
+cp /etc/pilight/config.json.org /opt/fhem/config/pilight/config.json
 fi
 ln -s /opt/fhem/config/pilight/config.json /etc/pilight/config.json
 
