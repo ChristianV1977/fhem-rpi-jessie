@@ -9,23 +9,16 @@ Timezone is set to Europe/Berlin with NTP support.
 
 Started and Controlled over Supervisord on Port 9001 (user:admin pass:admin).
 
-All should run out of the box.
 
-If using host volumes (ie. /opt/fhem) initial data are exctracted from the installation but only if the host directory is empty.
-For WiringPI, PiLight and MySensors Gateway needes "--device /dev/mem:/dev/mem --privileged"
 
 Website: http://www.fhem.de
 
 ### Features
-* volume /opt/fhem
-* volume /opt/yowsup-config
+* volume /opt/fhem/config
 * Imagemagic
-* avrdude - firmware flash
-* Python - yowsup (separate volume) for whatsapp client - volume: /opt/yowsup-config
+* Python - yowsup for whatsapp client
 * Open-SSH daemon
-* Exposed ports: 2222/SSH, 7072 Fhem-raw, 8083-8085 Fhem Web, 9001 supervisord (** new **)
-* supervisord for fhem
-* changed running fhem system checked with a pid-controlled script and totaly controlled from supervisord (** new **)
+* Exposed ports: 2222/SSH, 7072 Fhem-raw, 8083-8085 Fhem Web, 9001 supervisord
 * cron daemon / at
 * NFS client and autofs /net
 * ssh root password: fhem!
@@ -40,8 +33,11 @@ If NFS mount fails run with `--privileged` switch.
 
 ### Run with volume on host:
 
-    docker run -d --name fhem --cap-add SYS_ADMIN -v /var/fhemdocker/fhem:/opt/fhem -p 7072:7072 -p 8083:8083 -p 8084:8084 -p 8085:8085 -p 2222:2222 -p 9001:9001 vcrhome/fhem-rpi-jessie
+    docker run -d --name fhem --cap-add SYS_ADMIN -v /var/fhemdocker/fhem:/opt/fhem/config -p 7072:7072 -p 8083:8083 -p 8084:8084 -p 8085:8085 -p 2222:2222 -p 9001:9001 vcrhome/fhem-rpi-jessie
 
+If using host volumes (ie. /opt/fhem/config) initial config will be installed but only if the host directory is empty.
+The WiringPI, PiLight and MySensors Gateway needes "--device /dev/mem:/dev/mem --privileged"
+additional for PiLight us "--device /dev/lirc0:/dev/lirc0"
 
 Using  usb  needs to add the device to the run command.  Check usb devices on the host with ` lsusb `.
 

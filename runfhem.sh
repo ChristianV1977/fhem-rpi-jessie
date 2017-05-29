@@ -5,6 +5,25 @@ set -eu
 
 pidfile="/var/run/fhem/fhem.pid"
 cd /opt/fhem
+
+if [[ ! -f config/fhem.cfg ]]; then
+cp fhem.cfg.org config/fhem.cfg
+fi
+ln -s /opt/fhem/config/fhem.cfg /opt/fhem/fhem.cfg
+
+if [[ ! -d config/yowsup-config ]]; then
+mkdir config/yowsup-config
+fi
+ln -s /opt/fhem/config/yowsup-config /opt/yowsup-config
+
+if [[ ! -d config/pilight ]]; then
+mkdir config/pilight
+fi
+if [[ ! -f config/pilight/config.json ]]; then
+cp /etc/pilight/config.json.org /opt/fhem/config/pilight
+fi
+ln -s /opt/fhem/config/pilight/config.json /etc/pilight/config.json
+
 # command=/usr/sbin/your-daemon
 command=perl
 

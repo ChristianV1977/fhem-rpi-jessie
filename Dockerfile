@@ -56,7 +56,6 @@ RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata \
  && pip install --upgrade pip \
  && pip install python-axolotl --upgrade \
  && pip install pillow --upgrade \
- && pip install yowsup2 --upgrade \
  && pip install pyserial --upgrade \
  && pip install wiringpi2 --upgrade \
 
@@ -75,10 +74,15 @@ RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata \
 WORKDIR /opt
 
 # install yowsup-client
-RUN mkdir /opt/yowsup-config \
- && wget -N https://github.com/tgalal/yowsup/archive/master.zip \
+RUN wget -N https://github.com/tgalal/yowsup/archive/master.zip \
  && unzip -o master.zip \
- && rm master.zip
+ && rm master.zip \
+ && wget https://github.com/tgalal/python-axolotl/archive/master.zip \
+ && unzip master.zip \
+ && rm master.zip \
+ && cd python-axolotl-master \
+ && python setup.py install \
+ && pip install yowsup2 --upgrade
 
 # install RCswitch
 RUN git clone https://github.com/r10r/rcswitch-pi.git \
@@ -93,10 +97,14 @@ RUN git clone https://github.com/mysensors/MySensors.git --branch master \
 
 # install fhem (debian paket)
 RUN wget https://fhem.de/fhem-5.8.deb \
- && dpkg -i fhem-5.8.deb \
- && rm fhem-5.8.deb \
+ && dpkg -i fhem-*.deb \
+ && rm fhem-*.deb \
  && echo 'fhem    ALL = NOPASSWD:ALL' >>/etc/sudoers \
- && echo 'attr global pidfilename /var/run/fhem/fhem.pid' >> /opt/fhem/fhem.cfg
+ && mkdir fhem/config \
+ && echo 'attr global pidfilename /var/run/fhem/fhem.pid' >> fhem/fhem.cfg \
+ && echo 'attr global nofork 1' >> fhem/fhem.cfg \
+ && mv fhem/fhem.cfg fhem/fhem.cfg.org \
+ && mv /etc/pilight/config.json /etc/pilight/config.json.org
 
 ENV RUNVAR fhem
 WORKDIR /root
@@ -108,19 +116,18 @@ ADD run.sh /root/
 ADD runfhem.sh /root/
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN mkdir /_cfg  
-ADD volumedata2.sh /_cfg/
-RUN chmod +x /root/run.sh \
- && chmod +x /_cfg/*.sh \
- && /_cfg/volumedata2.sh create /opt/fhem \
- && /_cfg/volumedata2.sh create /opt/yowsup-config \
- && touch /opt/yowsup-config/empty.txt
+#RUN mkdir /_cfg  
+#ADD volumedata2.sh /_cfg/
+#RUN chmod +x /root/run.sh \
+# && chmod +x /_cfg/*.sh \
+# && /_cfg/volumedata2.sh create /opt/fhem \
+# && /_cfg/volumedata2.sh create /opt/yowsup-config \
+# && touch /opt/yowsup-config/empty.txt
 
 ENTRYPOINT ["./run.sh"]
 #CMD ["arg1"]
 
-# last add volumes
-VOLUME /opt/fhem   /opt/yowsup-config
+VOLUME /opt/fhem/config
 
 RUN [ "cross-build-end" ]
 # End Dockerfile
