@@ -27,7 +27,9 @@ fi
 if [[ ! -f config/pilight/config.json ]]; then
 cp /etc/pilight/config.json.org /opt/fhem/config/pilight/config.json
 fi
+if [[ -f /opt/fhem/config/pilight/config.json ]]; then
 rm /etc/pilight/config.json
+fi
 ln -s /opt/fhem/config/pilight/config.json /etc/pilight/config.json
 
 # command=/usr/sbin/your-daemon
