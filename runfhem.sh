@@ -17,8 +17,9 @@ chown fhem /opt/fhem -R
 if [[ ! -d config/yowsup-config ]]; then
 mkdir config/yowsup-config
 fi
-rm /opt/yowsup-config -R
+if [[ ! -d /opt/yowsup-config ]]; then
 ln -s /opt/fhem/config/yowsup-config /opt/yowsup-config
+fi
 chown fhem /opt/yowsup-config -R
 
 if [[ ! -d config/pilight ]]; then

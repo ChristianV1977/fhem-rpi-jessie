@@ -74,8 +74,7 @@ RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata \
 WORKDIR /opt
 
 # install yowsup-client
-RUN mkdir /opt/yowsup-config \
- && wget -N https://github.com/tgalal/yowsup/archive/master.zip \
+RUN wget -N https://github.com/tgalal/yowsup/archive/master.zip \
  && unzip -o master.zip \
  && rm master.zip \
  && wget https://github.com/tgalal/python-axolotl/archive/master.zip \
