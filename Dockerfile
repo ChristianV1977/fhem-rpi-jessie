@@ -11,6 +11,7 @@
 # sqlite3 libdbd-sqlite3-perl libtext-diff-perl libtimedate-perl libmail-imapclient-perl libgd-graph-perl
 # libtext-csv-perl libxml-simple-perl liblist-moreutils-perl ttf-liberation libimage-librsvg-perl libgd-text-perl
 # libsocket6-perl libio-socket-inet6-perl libmime-base64-perl libimage-info-perl libusb-1.0-0-dev libnet-server-perl
+# net-tools libsoap-lite-perl libjson-xs-perl
 ## DB log, SVG, sound
 # libdbi-perl libdbd-mysql-perl libclass-dbi-mysql-perl mysql-client libdbd-mysql libimage-librsvg-perl libav-tools
 ## whatsapp Python yowsup
@@ -42,6 +43,7 @@ RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata \
  sqlite3 libdbd-sqlite3-perl libtext-diff-perl libtimedate-perl libmail-imapclient-perl libgd-graph-perl \
  libtext-csv-perl libxml-simple-perl liblist-moreutils-perl ttf-liberation libimage-librsvg-perl libgd-text-perl \
  libsocket6-perl libio-socket-inet6-perl libmime-base64-perl libimage-info-perl libusb-1.0-0-dev libnet-server-perl \
+ net-tools libsoap-lite-perl libjson-xs-perl \
 
  libdbi-perl libdbd-mysql-perl libclass-dbi-mysql-perl mysql-client libdbd-mysql libimage-librsvg-perl libav-tools \
 
