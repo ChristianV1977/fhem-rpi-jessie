@@ -9,13 +9,15 @@ cd /opt/fhem
 if [[ ! -f config/fhem.cfg ]]; then
 cp fhem.cfg.org config/fhem.cfg
 fi
+if [[ ! -f fhem.cfg ]]; then
 ln -s /opt/fhem/config/fhem.cfg /opt/fhem/fhem.cfg
+fi
 chown fhem /opt/fhem -R
 
 if [[ ! -d config/yowsup-config ]]; then
 mkdir config/yowsup-config
 fi
-mv /opt/yowsup-config /opt/yowsup-config.org
+rm /opt/yowsup-config -R
 ln -s /opt/fhem/config/yowsup-config /opt/yowsup-config
 chown fhem /opt/yowsup-config -R
 
@@ -25,6 +27,7 @@ fi
 if [[ ! -f config/pilight/config.json ]]; then
 cp /etc/pilight/config.json.org /opt/fhem/config/pilight/config.json
 fi
+rm /etc/pilight/config.json
 ln -s /opt/fhem/config/pilight/config.json /etc/pilight/config.json
 
 # command=/usr/sbin/your-daemon
